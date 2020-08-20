@@ -24,7 +24,7 @@ function init() {
         layers: [
             new ol.layer.Tile({
                 source: new ol.source.OSM({
-                    // layer OMS Humanitarian
+                    // layer OSM Humanitarian
                     url: 'https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', 
                     zIndex: 0,
                     visible: true // default true
