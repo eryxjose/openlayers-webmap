@@ -38,13 +38,12 @@ function init() {
             })
         ]
     });
-
    map.addLayer(layerGroup);
 
     // CartoDB BaseMap Layer
     const cartoDBBaseLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
-            url: 'https://{1-4}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{scale}.png'
+            url: 'https://{1-4}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{scale}.png'
         })
     });
     map.addLayer(cartoDBBaseLayer);
@@ -56,6 +55,16 @@ function init() {
         visible: false
     });
     map.addLayer(tileDebugLayer);
+
+
+    // Stamen Basemap Layer
+    const stamenBaseLayer = new ol.layer.Tile({
+        source: new ol.source.Stamen({
+            layer: 'terrain-labels'
+        }),
+        visible: true
+    });
+    map.addLayer(stamenBaseLayer);
 
     
     map.on('click', function(e) {
