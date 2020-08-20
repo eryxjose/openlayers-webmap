@@ -7,6 +7,8 @@ Repositório com exemplo de uso da biblioteca OpenLayers para uma aplicação we
 
 Instale a extensão Live Server.
 
+Recomendo instalar a extensão Git History para consultar de maneira gráfica o histórico de commits.
+
 
 # Iniciar
 
