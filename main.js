@@ -49,6 +49,13 @@ function init() {
     });
     map.addLayer(cartoDBBaseLayer);
 
+
+    // Debug Layer
+    const tileDebugLayer = new ol.layer.Tile({
+        source: new ol.source.TileDebug()
+    });
+    map.addLayer(tileDebugLayer);
+
     
     map.on('click', function(e) {
         console.log(e.coordinate);
