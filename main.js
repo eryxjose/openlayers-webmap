@@ -14,7 +14,7 @@ function init() {
                 zIndex: 1,
                 visible: true, 
                 // define a extensão da área visível utilizando: minx miny maxx, maxy
-                extent: [-8484041.31321263, -4018303.98758232, -3816343.3818971664, 751049.7970467284], 
+                //extent: [-8484041.31321263, -4018303.98758232, -3816343.3818971664, 751049.7970467284], 
                 opacity: 0.5
             }),
             
@@ -28,7 +28,7 @@ function init() {
             new ol.layer.Tile({
                 visible: true, // default true
                 // provavelmente os extents dos layers serão os mesmos
-                extent: [-8484041.31321263, -4018303.98758232, -3816343.3818971664, 751049.7970467284], 
+                //extent: [-8484041.31321263, -4018303.98758232, -3816343.3818971664, 751049.7970467284], 
                 opacity: 0.5,
                 source: new ol.source.OSM({
                     // layer OSM Humanitarian
@@ -44,7 +44,8 @@ function init() {
     const cartoDBBaseLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
             url: 'https://{1-4}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{scale}.png'
-        })
+        }),
+        visible: false
     });
     map.addLayer(cartoDBBaseLayer);
 
@@ -68,11 +69,19 @@ function init() {
         //     url: 'http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
         // }),
 
-        visible: true
+        visible: false
     });
     map.addLayer(stamenBaseLayer);
 
-    
+    // ArcGIS Layer Rest API
+    const tileArcGISLayer = new ol.layer.Tile({
+        source: new ol.source.TileArcGISRest({
+            url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer"
+        }),
+        visible: true
+    })
+    map.addLayer(tileArcGISLayer);
+
     map.on('click', function(e) {
         console.log(e.coordinate);
     });
