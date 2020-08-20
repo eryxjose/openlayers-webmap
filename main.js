@@ -34,5 +34,9 @@ function init() {
     });
 
     map.addLayer(layerGroup);
+
+    map.on('click', function(e) {
+        console.log(e.coordinate);
+    });
     
 }
