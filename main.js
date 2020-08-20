@@ -62,6 +62,12 @@ function init() {
         source: new ol.source.Stamen({
             layer: 'terrain-labels'
         }),
+        
+        // Alternativa utilizando url 
+        // source: new ol.source.XYZ({
+        //     url: 'http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
+        // }),
+
         visible: true
     });
     map.addLayer(stamenBaseLayer);
