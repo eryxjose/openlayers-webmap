@@ -30,25 +30,5 @@ function init() {
         ],
         target: "js-map",
     });
-
-    const popupContainerElement = document.getElementById("popup-coordinates");
-
-    const popup = new ol.Overlay({
-        element: popupContainerElement,
-        setPosition: 'center-left' // posição de exibição do popup em relação ao click do mouse
-                                   // consultar documentação da api para new Overlay
-    });
-
-    map.addOverlay(popup);
-
-    map.on('click', function (e) {
-        debugger;
-        const clickedCoordinate = e.coordinate;
-        popup.setPosition(undefined); // remove popup existente da tela (do mapa)
-        popup.setPosition(clickedCoordinate); // exibe popup na coordenada informada1
-        popupContainerElement.innerHTML = clickedCoordinate;
-    });
-
-
     
 }
