@@ -41,6 +41,15 @@ function init() {
 
    map.addLayer(layerGroup);
 
+    // CartoDB BaseMap Layer
+    const cartoDBBaseLayer = new ol.layer.Tile({
+        source: new ol.source.XYZ({
+            url: 'https://{1-4}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{scale}.png'
+        })
+    });
+    map.addLayer(cartoDBBaseLayer);
+
+    
     map.on('click', function(e) {
         console.log(e.coordinate);
     });
