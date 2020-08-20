@@ -9,6 +9,11 @@ Instale a extensão Live Server.
 
 Recomendo instalar a extensão Git History para consultar de maneira gráfica o histórico de commits.
 
+# Instalação
+
+Faça o clone do repositório.
+
+    git clone https://github.com/eryxjose/openlayers-webmap.git
 
 # Iniciar
 
