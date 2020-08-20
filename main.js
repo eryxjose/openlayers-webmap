@@ -22,10 +22,6 @@ function init() {
         view: new ol.View({
             center: [0, 0],
             zoom: 2,
-            // utilize maxZoom e minZoom para limitar a ampliação do mapa, por exemplo:
-            maxZoom: 8,
-            minZoom: 1,
-            rotation: 0
         }),
         layers: [
             new ol.layer.Tile({
@@ -33,15 +29,6 @@ function init() {
             })
         ],
         target: "js-map",
-        keyboardEventTarget: document, // habilita as interações de teclado no elemento html informado
-        controls: ol.control.defaults().extend([
-            fullScreenControl,
-            mousePositionControl,
-            overViewMapControl,
-            scaleLineControl,
-            zoomSliderControl,
-            zoomToExtentControl
-        ])
     });
 
     const popupContainerElement = document.getElementById("popup-coordinates");
@@ -62,31 +49,6 @@ function init() {
         popupContainerElement.innerHTML = clickedCoordinate;
     });
 
-    // DragRotate interaction
 
-    const dragRotateInteraction = new ol.interaction.DragRotate({
-        condition: ol.events.condition.altKeyOnly
-    });
-
-    map.addInteraction(dragRotateInteraction);
-
-    
-    // draw interactions
-
-    const drawInteraction = new ol.interaction.Draw({
-        type: 'Polygon',
-        freehand: true // parametro para permitir desenho livre com o mouse
-    });
-
-    map.addInteraction(drawInteraction);
-
-    drawInteraction.on('drawend', function(e) {
-        console.log("Desenho finalizado.");
-        let parser = new ol.format.GeoJSON();
-        let drawnFreatures = parser.writeFeaturesObject([e.feature]);
-        console.log(drawnFreatures);
-    });
-
-    
     
 }
