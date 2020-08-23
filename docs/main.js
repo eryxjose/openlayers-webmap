@@ -89,11 +89,13 @@ function init() {
             params: {
                 LAYERS: 1,
                 TRANSPARENT: true
-            },
-            attributions: '<a href="https://nowcoast.noaa.gov/">NOAA</a>'
+            }
         })
     });
     map.addLayer(NOAAWMSLayer);
+
+    // Setter Attributions
+    NOAAWMSLayer.getSource().setAttributions('<a href="https://nowcoast.noaa.gov/">NOAA</a>');
 
     map.on('click', function(e) {
         console.log(e.coordinate);
