@@ -14,7 +14,6 @@ function init() {
                 zIndex: 1,
                 visible: true, 
                 // define a extensão da área visível utilizando: minx miny maxx, maxy
-                //extent: [-8484041.31321263, -4018303.98758232, -3816343.3818971664, 751049.7970467284], 
                 opacity: 0.5
             }),
             
@@ -28,7 +27,6 @@ function init() {
             new ol.layer.Tile({
                 visible: true, // default true
                 // provavelmente os extents dos layers serão os mesmos
-                //extent: [-8484041.31321263, -4018303.98758232, -3816343.3818971664, 751049.7970467284], 
                 opacity: 0.5,
                 source: new ol.source.OSM({
                     // layer OSM Humanitarian
