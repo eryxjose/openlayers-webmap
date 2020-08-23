@@ -10,101 +10,138 @@ function init() {
     
     const map = new ol.Map({
         view: new ol.View({
-            center: [-5885039.681732291, -1139828.9657885488],
-            zoom: 5,
+            center: [0, 0],
+            zoom: 3
         }),
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),  // Open Street Map - https://www.openstreetmap.org
-                zIndex: 1,
-                visible: true, 
-                opacity: 0.5
-            }),
-        ],
-        target: "js-map",
-        // Oculta a attribution padrão e referencia a attribution personalizada
+        target: 'js-map',
         controls: ol.control.defaults({attribution: false}).extend([attributionControl])
     });
 
-    // Layer Group
-    const layerGroup = new ol.layer.Group({
-        layers: [
-            new ol.layer.Tile({
-                visible: true, // default true
-                // provavelmente os extents dos layers serão os mesmos
-                opacity: 0.5,
-                source: new ol.source.OSM({
-                    // layer OSM Humanitarian
-                    url: 'https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', 
-                    zIndex: 0,
-                })
-            })
-        ]
+    const osmStandard = new ol.layer.Tile({
+        source: new ol.source.OSM(),
+        visible: true, 
+        title: 'OSMStandard'
     });
-   map.addLayer(layerGroup);
 
-    // CartoDB BaseMap Layer
-    const cartoDBBaseLayer = new ol.layer.Tile({
+    const osmHumanitarian = new ol.layer.Tile({
+        source: new ol.source.OSM({
+            url: 'https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', 
+        }),
+        visible: false,
+        title: 'OSMHumanitarian'
+    });
+
+    const bindMaps = new ol.layer.Tile({
+        source: new ol.source.BingMaps({
+            key: 'YOUR-BINGAPI-KEY', // Crie sua chave em bingmapsportal.com 
+            imagerySet: 'CanvasGray'
+        }),
+        visible: false,
+        title: 'BingMaps'
+    });
+
+    const cartoDBBase = new ol.layer.Tile({
         source: new ol.source.XYZ({
             url: 'https://{1-4}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{scale}.png',
             // Attribution para CartoDB obtido na documentação 
             attributions: '@ CARTO'
         }),
-        visible: true
+        visible: false,
+        title: 'CartoDarkDB'
     });
-    map.addLayer(cartoDBBaseLayer);
 
+    const stamenBaseLayer = new ol.layer.Tile({
+        source: new ol.source.Stamen({
+            layer: 'terrain-labels',
+            attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
+        }),
+        visible: false,
+        title: 'StamenTerrainWithLabels'
+    });
+
+    // Layer Group
+    const baseLayerGroup = new ol.layer.Group({
+        layers: [
+            osmStandard, osmHumanitarian, bindMaps, cartoDBBase, stamenBaseLayer
+        ]
+    });
+    map.addLayer(baseLayerGroup);
+    
+    // Base layer change event handler
+    const baseLayerElements = document.getElementsByName("baseLayerRadioButton");
+    
+    for(let baseLayerElement of baseLayerElements) {
+        baseLayerElement.addEventListener('change', function() {
+            let baseLayerElementValue = this.value;
+            baseLayerGroup.getLayers().forEach(function(element, index, array) {
+                let baseLayerName = element.get('title');
+                element.setVisible(baseLayerName === baseLayerElementValue);
+            });
+        });
+    }
 
     // Debug Layer
     const tileDebugLayer = new ol.layer.Tile({
         source: new ol.source.TileDebug(),
-        visible: true // BingMaps define attribution automaticamente
+        visible: false,
+        title: 'TileDebugLayer'
     });
-    map.addLayer(tileDebugLayer);
-
-
-    // Stamen Basemap Layer
-    const stamenBaseLayer = new ol.layer.Tile({
-        source: new ol.source.Stamen({
-            layer: 'terrain-labels',
-            // Stamen Attribution obtido em maps.stamen.com
-            attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
-        }),
-        
-        // Alternativa utilizando url 
-        // source: new ol.source.XYZ({
-        //     url: 'http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
-        // }),
-
-        visible: true
-    });
-    map.addLayer(stamenBaseLayer);
 
     // ArcGIS Layer Rest API
-    const tileArcGISLayer = new ol.layer.Tile({
+    const tileArcGisLayer = new ol.layer.Tile({
         source: new ol.source.TileArcGISRest({
             url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer",
             attribution: '(c) ESRI and its data partners'
         }),
-        visible: false // OpenLayers oculta a attribution quando visible é false
+        visible: false,
+        title: 'TileArcGISLayer'
     })
-    map.addLayer(tileArcGISLayer);
 
     // NOAA WMS Layer
-    const NOAAWMSLayer = new ol.layer.Tile({
+    const noaaWmsLayer = new ol.layer.Tile({
         source: new ol.source.TileWMS({
             url: "https://nowcoast.noaa.gov/arcgis/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/WMSServer",
             params: {
                 LAYERS: 1,
+                FORMAT: 'image/png',
                 TRANSPARENT: true
-            }
-        })
+            },
+            attributions: '<a href=https://nowcoast.noaa.gov/>@ NOAA</a>'
+        }),
+        visible: false,
+        title: 'NOAAWMSLayer'
     });
-    map.addLayer(NOAAWMSLayer);
+
+    // Raster Tile Layer Group
+    const rasterTileLayerGroup = new ol.layer.Group({
+        layers: [
+            tileDebugLayer, tileArcGisLayer, noaaWmsLayer
+        ]
+    });
+
+    map.addLayer(rasterTileLayerGroup);
+
+    const tileRasterLayerElements = document.getElementsByName('rasterTileLayerCheck');
+    debugger;
+    for(let tileRasterLayerElement of tileRasterLayerElements) {
+        tileRasterLayerElement.addEventListener('change', function() {
+            let tileRasterLayerElementValue = this.value;
+            let tileRasterLayer;
+
+            rasterTileLayerGroup.getLayers().forEach(function(element, index, array) {
+                if (tileRasterLayerElementValue === element.get('title')) {
+                    tileRasterLayer = element;
+                }
+            });
+
+            this.checked ? tileRasterLayer.setVisible(true) : tileRasterLayer.setVisible(false);
+        });
+    }
 
     // Setter Attributions
-    NOAAWMSLayer.getSource().setAttributions('<a href="https://nowcoast.noaa.gov/">NOAA</a>');
+    //NOAAWMSLayer.getSource().setAttributions('<a href="https://nowcoast.noaa.gov/">NOAA</a>');
 
+    // EventHandler sample
     map.on('click', function(e) {
         console.log(e.coordinate);
     });
