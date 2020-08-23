@@ -82,6 +82,18 @@ function init() {
     })
     map.addLayer(tileArcGISLayer);
 
+    // NOAA WMS Layer
+    const NOAAWMSLayer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+            url: "https://nowcoast.noaa.gov/arcgis/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/WMSServer",
+            params: {
+                LAYERS: 1,
+                TRANSPARENT: true
+            }
+        })
+    });
+    map.addLayer(NOAAWMSLayer);
+
     map.on('click', function(e) {
         console.log(e.coordinate);
     });
