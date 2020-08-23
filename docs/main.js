@@ -1,6 +1,11 @@
 
 window.onload = init; // garante que o javascript seja executado após carregamento completo do documento html
 
+// Custom Attribution
+const attributionControl = new ol.control.Attribution({
+    collapsible: true
+});
+
 function init() {
     
     const map = new ol.Map({
@@ -13,12 +18,12 @@ function init() {
                 source: new ol.source.OSM(),  // Open Street Map - https://www.openstreetmap.org
                 zIndex: 1,
                 visible: true, 
-                // define a extensão da área visível utilizando: minx miny maxx, maxy
                 opacity: 0.5
             }),
-            
         ],
         target: "js-map",
+        // Oculta a attribution padrão e referencia a attribution personalizada
+        controls: ol.control.defaults({attribution: false}).extend([attributionControl])
     });
 
     // Layer Group
@@ -41,9 +46,11 @@ function init() {
     // CartoDB BaseMap Layer
     const cartoDBBaseLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
-            url: 'https://{1-4}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{scale}.png'
+            url: 'https://{1-4}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{scale}.png',
+            // Attribution para CartoDB obtido na documentação 
+            attributions: '@ CARTO'
         }),
-        visible: false
+        visible: true
     });
     map.addLayer(cartoDBBaseLayer);
 
@@ -51,7 +58,7 @@ function init() {
     // Debug Layer
     const tileDebugLayer = new ol.layer.Tile({
         source: new ol.source.TileDebug(),
-        visible: false
+        visible: true // BingMaps define attribution automaticamente
     });
     map.addLayer(tileDebugLayer);
 
@@ -59,7 +66,9 @@ function init() {
     // Stamen Basemap Layer
     const stamenBaseLayer = new ol.layer.Tile({
         source: new ol.source.Stamen({
-            layer: 'terrain-labels'
+            layer: 'terrain-labels',
+            // Stamen Attribution obtido em maps.stamen.com
+            attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
         }),
         
         // Alternativa utilizando url 
@@ -67,16 +76,17 @@ function init() {
         //     url: 'http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
         // }),
 
-        visible: false
+        visible: true
     });
     map.addLayer(stamenBaseLayer);
 
     // ArcGIS Layer Rest API
     const tileArcGISLayer = new ol.layer.Tile({
         source: new ol.source.TileArcGISRest({
-            url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer"
+            url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer",
+            attribution: '(c) ESRI and its data partners'
         }),
-        visible: true
+        visible: false // OpenLayers oculta a attribution quando visible é false
     })
     map.addLayer(tileArcGISLayer);
 
