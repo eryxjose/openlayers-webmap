@@ -89,7 +89,8 @@ function init() {
             params: {
                 LAYERS: 1,
                 TRANSPARENT: true
-            }
+            },
+            attributions: '<a href="https://nowcoast.noaa.gov/">NOAA</a>'
         })
     });
     map.addLayer(NOAAWMSLayer);
