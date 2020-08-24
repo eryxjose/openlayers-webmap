@@ -59,10 +59,22 @@ function init() {
         title: 'StamenTerrainWithLabels'
     });
 
-    // Layer Group
+    // Base Vector Layers - https://cloud.maptiler.com/maps/
+    
+    const osmVectorTile = new ol.layer.VectorTile({
+        source: new ol.source.VectorTile({
+            url: 'https://api.maptiler.com/tiles/v3-4326/{z}/{x}/{y}.pbf?key=SKmV0MT53ryiZlIU0KPg',
+            format: new ol.format.MVT(),
+            attributions: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+        }),
+        visible: false,
+        title: 'VectorTileLayerOsm'
+    })
+
+    // Base Layer Group
     const baseLayerGroup = new ol.layer.Group({
         layers: [
-            osmStandard, osmHumanitarian, bindMaps, cartoDBBase, stamenBaseLayer
+            osmStandard, osmHumanitarian, bindMaps, cartoDBBase, stamenBaseLayer, osmVectorTile
         ]
     });
     map.addLayer(baseLayerGroup);
