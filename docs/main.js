@@ -69,7 +69,6 @@ function init() {
     
     // Base layer change event handler
     const baseLayerElements = document.getElementsByName("baseLayerRadioButton");
-    
     for(let baseLayerElement of baseLayerElements) {
         baseLayerElement.addEventListener('change', function() {
             let baseLayerElementValue = this.value;
@@ -112,23 +111,32 @@ function init() {
         title: 'NOAAWMSLayer'
     });
 
-    // Raster Tile Layer Group
-    const rasterTileLayerGroup = new ol.layer.Group({
-        layers: [
-            tileDebugLayer, tileArcGisLayer, noaaWmsLayer
-        ]
+    // Static Image OSM
+    const osmStaticImage = new ol.layer.Image({
+        source: new ol.source.ImageStatic({
+            url: './data/static_images/static-image-1.png',
+            imageExtent: [-9985427.627062285, -5019161.025317814, -5015186.299846984, 9783.939620502293],
+            attribution: '<a href=https://www.openstreetmap.org/copyright/>OpenStreetMap</a>'
+        }),
+        title: 'OsmStaticImage'
     });
 
-    map.addLayer(rasterTileLayerGroup);
+    // Raster Tile Layer Group
+    const rasterLayerGroup = new ol.layer.Group({
+        layers: [
+            tileDebugLayer, tileArcGisLayer, noaaWmsLayer, osmStaticImage
+        ]
+    });
+    map.addLayer(rasterLayerGroup);
 
-    const tileRasterLayerElements = document.getElementsByName('rasterTileLayerCheck');
-    debugger;
+    const tileRasterLayerElements = document.getElementsByName('rasterLayerCheck');
     for(let tileRasterLayerElement of tileRasterLayerElements) {
         tileRasterLayerElement.addEventListener('change', function() {
             let tileRasterLayerElementValue = this.value;
             let tileRasterLayer;
 
-            rasterTileLayerGroup.getLayers().forEach(function(element, index, array) {
+            rasterLayerGroup.getLayers().forEach(function(element, index, array) {
+                debugger;
                 if (tileRasterLayerElementValue === element.get('title')) {
                     tileRasterLayer = element;
                 }
@@ -137,6 +145,10 @@ function init() {
             this.checked ? tileRasterLayer.setVisible(true) : tileRasterLayer.setVisible(false);
         });
     }
+
+    
+
+
 
     // Setter Attributions
     //NOAAWMSLayer.getSource().setAttributions('<a href="https://nowcoast.noaa.gov/">NOAA</a>');
