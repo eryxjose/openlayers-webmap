@@ -118,7 +118,8 @@ function init() {
             imageExtent: [-9985427.627062285, -5019161.025317814, -5015186.299846984, 9783.939620502293],
             attribution: '<a href=https://www.openstreetmap.org/copyright/>OpenStreetMap</a>'
         }),
-        title: 'OsmStaticImage'
+        title: 'OsmStaticImage',
+        visible: false
     });
 
     // Raster Tile Layer Group
@@ -145,10 +146,6 @@ function init() {
             this.checked ? tileRasterLayer.setVisible(true) : tileRasterLayer.setVisible(false);
         });
     }
-
-    
-
-
 
     // Setter Attributions
     //NOAAWMSLayer.getSource().setAttributions('<a href="https://nowcoast.noaa.gov/">NOAA</a>');
