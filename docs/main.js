@@ -71,10 +71,16 @@ function init() {
         title: 'VectorTileLayerOsm'
     });
 
+
     // Base Layer Group
     const baseLayerGroup = new ol.layer.Group({
         layers: [
-            osmStandard, osmHumanitarian, bindMaps, cartoDBBase, stamenBaseLayer, osmVectorTile
+            osmStandard, 
+            osmHumanitarian,
+            bindMaps, 
+            cartoDBBase, 
+            stamenBaseLayer, 
+            osmVectorTile
         ]
     });
     map.addLayer(baseLayerGroup);
@@ -148,11 +154,44 @@ function init() {
         title: 'onlineApp1Users'
     });
 
+    
+    // Região Sul Heatmap
+    const regiaoSulHeatmap = new ol.layer.Heatmap({
+        source: new ol.source.Vector({
+            url: './data/vector_data/regiaoSul.geojson',
+            format: new ol.format.GeoJSON()
+        }),
+        radius: 10,
+        blur: 0,
+        visible: false,
+        title: 'regiaoSul'
+    });
+
+
+    // Vector Layer
+    
+    const jsonVectorTile = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: './data/vector_data/regiaoSul.geojson',
+            format: new ol.format.GeoJSON()
+        }),
+        radius: 15,
+        blur: 10,
+        visible: false,
+        title: 'VectorJson'
+    });
+
 
     // Layer Group
     const rasterLayerGroup = new ol.layer.Group({
         layers: [
-            tileDebugLayer, tileArcGisLayer, noaaWmsLayer, osmStaticImage, heatMapOnlineApp1Users
+            tileDebugLayer, 
+            tileArcGisLayer, 
+            noaaWmsLayer, 
+            osmStaticImage, 
+            heatMapOnlineApp1Users, 
+            regiaoSulHeatmap,
+            jsonVectorTile
         ]
     });
     map.addLayer(rasterLayerGroup);
@@ -174,12 +213,17 @@ function init() {
         });
     }
 
+
+
     // Setter Attributions
     //NOAAWMSLayer.getSource().setAttributions('<a href="https://nowcoast.noaa.gov/">NOAA</a>');
 
     // EventHandler sample
     map.on('click', function(e) {
-        console.log(e.coordinate);
+        map.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+            console.log(feature.getKeys());
+        });
+        console.log(e);
     });
     
 }
