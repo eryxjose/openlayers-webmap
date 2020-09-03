@@ -69,7 +69,7 @@ function init() {
         }),
         visible: false,
         title: 'VectorTileLayerOsm'
-    })
+    });
 
     // Base Layer Group
     const baseLayerGroup = new ol.layer.Group({
@@ -101,12 +101,13 @@ function init() {
     // ArcGIS Layer Rest API
     const tileArcGisLayer = new ol.layer.Tile({
         source: new ol.source.TileArcGISRest({
-            url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer",
+            //url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer",
+            url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer?f=json",
             attribution: '(c) ESRI and its data partners'
         }),
         visible: false,
         title: 'TileArcGISLayer'
-    })
+    });
 
     // NOAA WMS Layer
     const noaaWmsLayer = new ol.layer.Tile({
@@ -134,10 +135,24 @@ function init() {
         visible: false
     });
 
-    // Raster Tile Layer Group
+
+    // Heatmap
+    const heatMapOnlineApp1Users = new ol.layer.Heatmap({
+        source: new ol.source.Vector({
+            url: './data/vector_data/onlineApp1Users.json',
+            format: new ol.format.GeoJSON()
+        }),
+        radius: 15,
+        blur: 10,
+        visible: false,
+        title: 'onlineApp1Users'
+    });
+
+
+    // Layer Group
     const rasterLayerGroup = new ol.layer.Group({
         layers: [
-            tileDebugLayer, tileArcGisLayer, noaaWmsLayer, osmStaticImage
+            tileDebugLayer, tileArcGisLayer, noaaWmsLayer, osmStaticImage, heatMapOnlineApp1Users
         ]
     });
     map.addLayer(rasterLayerGroup);

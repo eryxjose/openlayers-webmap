@@ -1,0 +1,57 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "numero_usuarios_app1": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.778320312499999,
+          46.9502622421856
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "numero_usuarios_app1": 0.4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.6474609374999996,
+          47.989921667414194
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "numero_usuarios_app1": 0.3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.1396484375,
+          42.4234565179383
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "numero_usuarios_app1": 0.9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.283203125,
+          51.23440735163459
+        ]
+      }
+    }
+  ]
+}
