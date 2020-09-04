@@ -17,3 +17,16 @@ html,body {
 .column-1 {
     padding-left: 15px;
 }
+.overlay-container {
+    background-color: lightgrey;
+    width: 120px;
+    color: #000;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+}
+

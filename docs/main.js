@@ -203,7 +203,6 @@ function init() {
             let tileRasterLayer;
 
             rasterLayerGroup.getLayers().forEach(function(element, index, array) {
-                debugger;
                 if (tileRasterLayerElementValue === element.get('title')) {
                     tileRasterLayer = element;
                 }
@@ -218,9 +217,34 @@ function init() {
     // Setter Attributions
     //NOAAWMSLayer.getSource().setAttributions('<a href="https://nowcoast.noaa.gov/">NOAA</a>');
 
+    // Popup
+    const overlayContainer = document.querySelector(".overlay-container");
+    const overlayLayer = new ol.Overlay({
+        element: overlayContainer
+    });
+    map.addOverlay(overlayLayer);
+
+    const capitalElement = document.querySelector("#capital");
+    const numeroUsuariosElement = document.querySelector("#numeroUsuarios");
+
     // EventHandler sample
     map.on('click', function(e) {
+        overlayLayer.setPosition(undefined); // limpa popup exibido ao clicar fora dos polígonos
+        
         map.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+
+            let coordinate = e.coordinate;
+            let capital = feature.get('capital');
+            let numeroUsuarios = feature.get('numero_usuarios');
+
+            if (capital && numeroUsuarios) {
+                overlayLayer.setPosition(coordinate);
+                capitalElement.innerHTML = capital;
+                numeroUsuariosElement.innerHTML = numeroUsuarios;
+            }
+
+            console.log(feature.get('capital'));
+            console.log(feature.get('numero_usuarios'));
             console.log(feature.getKeys());
         });
         console.log(e);
