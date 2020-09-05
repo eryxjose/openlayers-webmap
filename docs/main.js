@@ -243,11 +243,12 @@ function init() {
                 numeroUsuariosElement.innerHTML = numeroUsuarios;
             }
 
-            console.log(feature.get('capital'));
-            console.log(feature.get('numero_usuarios'));
-            console.log(feature.getKeys());
+        },{
+            layerFilter: function (layerCandidate) {
+                return layerCandidate.get('title') === 'VectorJson';
+            }
         });
-        console.log(e);
+        
     });
     
 }
