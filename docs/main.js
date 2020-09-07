@@ -11,7 +11,7 @@ function init() {
     const map = new ol.Map({
         view: new ol.View({
             center: [0, 0],
-            zoom: 13
+            zoom: 8
         }),
         target: 'js-map',
         controls: ol.control.defaults({attribution: false}).extend([attributionControl])
@@ -261,13 +261,15 @@ function init() {
          projection: viewProjection
     });
 
+    const geolocationElement = document.getElementById("geolocationLabel");
     geolocation.on('change:position', function(e) {
-        //console.log(e.target.getPosition());
-        console.log(this.getPosition());
-        
+        //console.log(this.getPosition());
+        //console.log(e.target.values_);
+
         let geolocation = this.getPosition();
 
         map.getView().setCenter(geolocation);
+        geolocationElement.innerHTML = `Latitude: ${geolocation[0]}, Longitude: ${geolocation[1]}`;
     });
     
 }
