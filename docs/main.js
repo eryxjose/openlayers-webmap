@@ -11,7 +11,7 @@ function init() {
     const map = new ol.Map({
         view: new ol.View({
             center: [0, 0],
-            zoom: 3
+            zoom: 13
         }),
         target: 'js-map',
         controls: ol.control.defaults({attribution: false}).extend([attributionControl])
@@ -249,6 +249,25 @@ function init() {
             }
         });
         
+    });
+
+    // Geolocation API
+    const viewProjection = map.getView().getProjection();
+    const geolocation = new ol.Geolocation({
+         tracking: true,
+         trackingOptions: {
+             enableHighAccuracy: true
+         },
+         projection: viewProjection
+    });
+
+    geolocation.on('change:position', function(e) {
+        //console.log(e.target.getPosition());
+        console.log(this.getPosition());
+        
+        let geolocation = this.getPosition();
+
+        map.getView().setCenter(geolocation);
     });
     
 }
